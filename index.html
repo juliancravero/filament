@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>GST3D — Elegí tu región</title>
+<meta name="description" content="Filamentos, resinas e impresoras 3D. Elegí tu región para ver precios y envíos.">
+<meta name="theme-color" content="#07060c">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%2307060c'/><text x='16' y='22' font-family='Arial' font-weight='700' font-size='14' text-anchor='middle' fill='%23b46cff'>3D</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Michroma&family=Urbanist:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  color-scheme: dark;
+  --bg: #07060c;
+  --text: #f4f1fa;
+  --muted: #a39cb6;
+  --violet: #b46cff;
+  --violet-deep: #6a1fd1;
+  --card: rgb(28 25 40 / 0.72);
+  --card-hover: rgb(40 34 60 / 0.85);
+  --line: rgb(255 255 255 / 0.09);
+  --flange: #4a4a50;
+  --font: "Urbanist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --logo: "Michroma", "Eurostile", "Arial Black", sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; }
+:root { padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+html, body { height: 100%; }
+body {
+  margin: 0; background: var(--bg); color: var(--text); font-family: var(--font);
+  -webkit-font-smoothing: antialiased; overflow-x: hidden;
+}
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--violet); outline-offset: 3px; border-radius: 8px; }
+
+/* ===== Fondo: ondas violetas ===== */
+.sky { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
+  background:
+    radial-gradient(60% 55% at 72% 30%, rgb(106 31 209 / .55), transparent 70%),
+    radial-gradient(40% 40% at 20% 90%, rgb(64 20 130 / .45), transparent 70%),
+    var(--bg); }
+.sky svg { position: absolute; width: 140%; height: 140%; left: -20%; top: -20%; }
+.sky path { fill: none; stroke-linecap: round; }
+@media (prefers-reduced-motion: no-preference) {
+  .sky svg { animation: drift 28s ease-in-out infinite alternate; }
+}
+@keyframes drift { to { transform: translate3d(-3%, 2%, 0) rotate(-2deg); } }
+
+/* ===== Layout ===== */
+.page { position: relative; z-index: 1; min-height: 100%; display: grid; grid-template-rows: auto 1fr auto; }
+header { padding: 24px clamp(20px, 4vw, 40px); }
+.mini-logo { font-family: var(--logo); font-size: 17px; letter-spacing: .04em; text-decoration: none; }
+.mini-logo span, .logo span { color: var(--violet); }
+
+main {
+  display: grid; grid-template-columns: 1fr; place-items: center; align-content: center; gap: clamp(24px, 5vw, 72px);
+  width: min(1180px, 100%); margin: 0 auto; padding: 8px clamp(20px, 4vw, 40px) 56px;
+}
+main .choose { align-items: center; text-align: center; }
+main .lead { margin-inline: auto; }
+main .regions { width: 100%; }
+main .region { text-align: left; }
+main.has-img { grid-template-columns: 1.05fr 1fr; }
+main.has-img .visual { display: block; }
+main.has-img .choose { align-items: flex-start; text-align: left; }
+main.has-img .lead { margin-inline: 0; }
+
+/* ===== Foto (opcional) ===== */
+.visual { display: none; position: relative; }
+.visual img { display: block; width: 100%; height: auto; filter: drop-shadow(0 40px 60px rgb(0 0 0 / .6)); }
+@media (prefers-reduced-motion: no-preference) {
+  .visual img { animation: rise .8s cubic-bezier(.2, .8, .2, 1) both; }
+}
+@keyframes rise { from { opacity: 0; transform: translateY(24px); } }
+
+/* ===== Selector ===== */
+.choose { display: flex; flex-direction: column; }
+.logo { margin: 0; font-family: var(--logo); font-weight: 400; font-size: clamp(46px, 7.4vw, 92px); line-height: 1; letter-spacing: .02em; white-space: nowrap; }
+.lead { margin: 18px 0 30px; font-size: 18px; color: var(--muted); max-width: 34ch; }
+.regions { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; max-width: 440px; }
+.region {
+  display: flex; align-items: center; gap: 18px; padding: 18px 20px; border-radius: 14px;
+  background: var(--card); border: 1px solid var(--line); text-decoration: none;
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  transition: background .2s, border-color .2s, transform .2s;
+}
+.region:hover { background: var(--card-hover); border-color: rgb(180 108 255 / .5); transform: translateX(4px); }
+.region:active { transform: translateX(2px) scale(.99); }
+.region[aria-disabled="true"] { opacity: .55; pointer-events: none; }
+.flag { width: 48px; height: 48px; border-radius: 50%; flex-shrink: 0; overflow: hidden; box-shadow: 0 0 0 2px rgb(255 255 255 / .12); }
+.flag svg { display: block; width: 100%; height: 100%; }
+.r-text { flex: 1; min-width: 0; }
+.r-name { display: flex; align-items: center; gap: 10px; font-size: 22px; font-weight: 700; line-height: 1.2; }
+.r-sub { display: block; margin-top: 2px; font-size: 14px; color: var(--muted); }
+.suggest { font-size: 12px; font-weight: 600; padding: 3px 9px; border-radius: 999px; background: rgb(180 108 255 / .18); color: #dcc0ff; }
+.chev { width: 22px; height: 22px; color: var(--muted); flex-shrink: 0; transition: color .2s, transform .2s; }
+.region:hover .chev { color: var(--violet); transform: translateX(3px); }
+.region.is-suggested { border-color: rgb(180 108 255 / .45); }
+
+.remember { display: inline-flex; align-items: center; gap: 10px; margin-top: 18px; font-size: 14px; color: var(--muted); cursor: pointer; user-select: none; }
+.remember input { width: 18px; height: 18px; accent-color: var(--violet); margin: 0; cursor: pointer; }
+
+/* ===== Footer ===== */
+footer { width: min(1180px, 100%); margin: 0 auto; padding: 0 clamp(20px, 4vw, 40px) 28px; }
+.foot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px 24px; padding-top: 20px; border-top: 1px solid var(--line); font-size: 14px; color: var(--muted); }
+.foot nav { display: flex; gap: 22px; }
+.foot a { text-decoration: none; }
+.foot a:hover { color: var(--text); text-decoration: underline; }
+
+/* ===== Mobile ===== */
+@media (max-width: 860px) {
+  main.has-img { grid-template-columns: 1fr; padding-top: 0; gap: 8px; }
+  main.has-img .visual { order: -1; width: min(420px, 88%); margin: 0 auto; }
+  main.has-img .choose { align-items: center; text-align: center; }
+  main.has-img .lead { margin-inline: auto; }
+  .lead { margin: 12px auto 24px; }
+  .foot { justify-content: center; text-align: center; }
+}
+@media (max-width: 400px) {
+  .region { padding: 14px 16px; gap: 14px; }
+  .flag { width: 40px; height: 40px; }
+  .r-name { font-size: 19px; }
+}
+</style>
+</head>
+<body>
+
+<div class="sky" aria-hidden="true">
+  <svg viewBox="0 0 1400 900" preserveAspectRatio="xMidYMid slice">
+    <defs>
+      <linearGradient id="g1" x1="0" x2="1"><stop offset="0" stop-color="#3b0f86" stop-opacity="0"/><stop offset=".5" stop-color="#7b2ff0"/><stop offset="1" stop-color="#2a0b66" stop-opacity="0"/></linearGradient>
+      <linearGradient id="g2" x1="0" x2="1"><stop offset="0" stop-color="#1b2a6b" stop-opacity="0"/><stop offset=".6" stop-color="#4c5bd4"/><stop offset="1" stop-color="#1b2a6b" stop-opacity="0"/></linearGradient>
+      <filter id="blur"><feGaussianBlur stdDeviation="22"/></filter>
+    </defs>
+    <g filter="url(#blur)" opacity=".9">
+      <path d="M-100 700 C 300 420, 700 860, 1500 260" stroke="url(#g1)" stroke-width="150"/>
+      <path d="M-100 260 C 400 120, 800 520, 1500 80" stroke="url(#g2)" stroke-width="70" opacity=".55"/>
+      <path d="M200 1000 C 600 640, 1000 820, 1500 520" stroke="url(#g1)" stroke-width="90" opacity=".6"/>
+    </g>
+    <g opacity=".35">
+      <path d="M-100 690 C 300 410, 700 850, 1500 250" stroke="#c9a6ff" stroke-width="1.2"/>
+      <path d="M200 990 C 600 630, 1000 810, 1500 510" stroke="#9aa8ff" stroke-width="1"/>
+    </g>
+  </svg>
+</div>
+
+<div class="page">
+  <header>
+    <a class="mini-logo" href="#" aria-label="GST3D">GST<span>3D</span></a>
+  </header>
+
+  <main id="main">
+    <div class="visual" aria-hidden="true">
+      <!-- La foto se carga desde HERO_IMAGE (en el script) -->
+      <img id="heroImg" alt="">
+    </div>
+
+    <section class="choose" aria-labelledby="title">
+      <h1 class="logo" id="title">GST<span>3D</span></h1>
+      <p class="lead">Elegí tu región para ver precios, stock y envíos.</p>
+      <ul class="regions" id="regions"></ul>
+      <label class="remember"><input type="checkbox" id="remember"> Recordar mi elección</label>
+    </section>
+  </main>
+
+  <footer>
+    <div class="foot">
+      <span>© <span id="year"></span> GST3D. Todos los derechos reservados.</span>
+      <nav aria-label="Información">
+        <a href="https://www.gst3d.com.ar/nosotros/">Nosotros</a>
+        <a href="https://www.gst3d.com.ar/productos/">Productos</a>
+        <a href="https://www.gst3d.com.ar/politicas-de-privacidad/">Privacidad</a>
+      </nav>
+    </div>
+  </footer>
+</div>
+
+<script>
+/* =========================================================
+   CONFIGURACIÓN — completá las URLs de cada tienda
+   ========================================================= */
+const HERO_IMAGE = ""; // ej: "bobinas.png" (PNG sin fondo). Vacío = página centrada sin foto
+
+const REGIONS = [
+  { id: "ar", name: "Argentina", sub: "Precios en pesos, envíos a todo el país", url: "https://www.gst3d.com.ar",
+    match: tz => tz.startsWith("America/Argentina") || tz === "America/Buenos_Aires" },
+  { id: "py", name: "Paraguay",  sub: "Precios en guaraníes, envíos a todo el país", url: "",
+    match: tz => tz === "America/Asuncion" },
+  { id: "eu", name: "Europa",    sub: "Precios en euros, envíos a la Unión Europea", url: "",
+    match: tz => tz.startsWith("Europe/") },
+];
+/* ========================================================= */
+
+const FLAGS = {
+  ar: `<svg viewBox="0 0 48 48"><rect width="48" height="48" fill="#74acdf"/><rect y="16" width="48" height="16" fill="#fff"/><circle cx="24" cy="24" r="4.6" fill="#f6b40e"/><circle cx="24" cy="24" r="2.4" fill="#d8920a"/></svg>`,
+  py: `<svg viewBox="0 0 48 48"><rect width="48" height="16" fill="#d52b1e"/><rect y="16" width="48" height="16" fill="#fff"/><rect y="32" width="48" height="16" fill="#0038a8"/><circle cx="24" cy="24" r="5" fill="none" stroke="#0038a8" stroke-width="1"/><circle cx="24" cy="24" r="1.6" fill="#f6c700"/></svg>`,
+  eu: (() => {
+    let stars = "";
+    for (let i = 0; i < 12; i++) {
+      const a = (i / 12) * Math.PI * 2 - Math.PI / 2;
+      const x = 24 + Math.cos(a) * 12, y = 24 + Math.sin(a) * 12;
+      stars += `<polygon fill="#ffcc00" points="${star(x, y, 2.3, 0.95)}"/>`;
+    }
+    return `<svg viewBox="0 0 48 48"><rect width="48" height="48" fill="#003399"/>${stars}</svg>`;
+  })(),
+};
+function star(cx, cy, R, r) {
+  const pts = [];
+  for (let i = 0; i < 10; i++) {
+    const a = (i * Math.PI) / 5 - Math.PI / 2, rad = i % 2 ? r : R;
+    pts.push(`${(cx + Math.cos(a) * rad).toFixed(2)},${(cy + Math.sin(a) * rad).toFixed(2)}`);
+  }
+  return pts.join(" ");
+}
+
+const store = {
+  get(k) { try { return localStorage.getItem(k); } catch { return null; } },
+  set(k, v) { try { v ? localStorage.setItem(k, v) : localStorage.removeItem(k); } catch {} },
+};
+
+// Si eligió "recordar", lo mandamos directo (salvo que entre con ?elegir para cambiar de región)
+const params = new URLSearchParams(location.search);
+const saved = store.get("gst3d-region");
+const savedRegion = REGIONS.find(r => r.id === saved && r.url);
+if (savedRegion && !params.has("elegir")) location.replace(savedRegion.url);
+
+let tz = "";
+try { tz = Intl.DateTimeFormat().resolvedOptions().timeZone || ""; } catch {}
+const suggested = REGIONS.find(r => r.match(tz));
+
+const chev = `<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>`;
+
+document.getElementById("regions").innerHTML = REGIONS.map(r => {
+  const ready = Boolean(r.url);
+  const isSug = suggested && suggested.id === r.id;
+  return `<li>
+    <a class="region${isSug ? " is-suggested" : ""}" href="${ready ? r.url : "#"}" data-id="${r.id}" ${ready ? "" : 'aria-disabled="true"'}>
+      <span class="flag" aria-hidden="true">${FLAGS[r.id]}</span>
+      <span class="r-text">
+        <span class="r-name">${r.name}${isSug ? '<span class="suggest">Sugerido</span>' : ""}</span>
+        <span class="r-sub">${ready ? r.sub : "Muy pronto"}</span>
+      </span>
+      ${chev}
+    </a>
+  </li>`;
+}).join("");
+
+const remember = document.getElementById("remember");
+remember.checked = Boolean(saved);
+remember.addEventListener("change", () => { if (!remember.checked) store.set("gst3d-region", null); });
+
+document.getElementById("regions").addEventListener("click", e => {
+  const a = e.target.closest("a.region");
+  if (!a) return;
+  store.set("gst3d-region", remember.checked ? a.dataset.id : null);
+});
+
+if (HERO_IMAGE) {
+  const img = document.getElementById("heroImg");
+  img.onload = () => document.getElementById("main").classList.add("has-img");
+  img.src = HERO_IMAGE;
+}
+
+document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
